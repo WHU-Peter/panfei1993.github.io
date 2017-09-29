@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next gemini" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,11 +35,54 @@
 
 
 
-
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
 
@@ -69,13 +110,13 @@
 
 
 
-<meta name="description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
+<meta name="description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。     可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就">
 <meta name="keywords" content="Java,深入Java虚拟机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(深入Java-1)Java运行时内存区域">
 <meta property="og:url" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/index.html">
 <meta property="og:site_name" content="市井小民whu">
-<meta property="og:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
+<meta property="og:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。     可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java运行时区域.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java通过直接指针访问对象.jpg">
@@ -83,7 +124,7 @@
 <meta property="og:updated_time" content="2017-09-29T08:48:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(深入Java-1)Java运行时内存区域">
-<meta name="twitter:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
+<meta name="twitter:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。     可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就">
 <meta name="twitter:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java运行时区域.jpg">
 
 
@@ -92,12 +133,11 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
-    version: '5.1.2',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    motion: false,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -130,6 +170,12 @@
 
 
 
+
+
+
+
+
+
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -139,7 +185,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -185,12 +231,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            关于
+            归档
           </a>
         </li>
       
@@ -201,16 +247,6 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
           </a>
         </li>
       
@@ -252,7 +288,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="潘飞">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,40 +356,52 @@
 
       
         <p>根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。</p>
-<p><img src="java运行时区域.jpg" alt=""></p>
+<div class="figure">
+<img src="java运行时区域.jpg">
+
+</div>
 <p>可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。</p>
-<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机字节码指令的地址；如果执行的是个native方法，程序计数器里记录的则为空（Undefined）。</p>
+<h2 id="程序计数器">程序计数器</h2>
+<p>程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机字节码指令的地址；如果执行的是个native方法，程序计数器里记录的则为空（Undefined）。</p>
 <p>与计算机组成原理中的PC寄存器的含义类似，他保存着当前线程要执行的下一条指令地址。一个处理器或者多核处理器的一个内核，一次只能执行一条线程里的指令，为了切换线程后，能恢复到正确的执行位置，每个线程都需要一个独立的程序计数器。操作系统在进行线程调度时，将一个线程切下CPU，需要保存现场，这里所指的现场信息中，很重要的一点就是PC寄存器中保存的当前线程要执行的下一条指令地址。</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>这个区域是唯一在Java虚拟机规范中没有规定任务OutOfMemoryError情况的区域。</li>
 <li>每个线程都需要一个程序技术器来记录当前线程执行的虚拟机字节码位置，所以这是个线程私有的区域。</li>
 </ol>
-<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>与操作系统中进程的栈空间类似，每个方法在被调用执行的时候，都会创建一个栈帧压入栈中，执行完毕后弹出栈。栈帧中包含局部变量表、动态链接、方法出口等。每个方法的调用，就是一个栈帧入栈再出栈的过程。</p>
+<h2 id="java虚拟机栈">Java虚拟机栈</h2>
+<p>与操作系统中进程的栈空间类似，每个方法在被调用执行的时候，都会创建一个栈帧压入栈中，执行完毕后弹出栈。栈帧中包含局部变量表、动态链接、方法出口等。每个方法的调用，就是一个栈帧入栈再出栈的过程。</p>
 <p>其中局部变量表中，存放着各种基本数据类型变量和对象引用（reference）。虚拟机规范中只规定了：对象引用不是对象本身，它指向一个具体的对象，但是具体怎么指，不同的虚拟机有不同的实现方式。主流的实现有两种方式：可能指向一个对象的起始地址，也可能指向一个代表对象的句柄。如下图所示：</p>
-<p><img src="java通过直接指针访问对象.jpg" alt=""></p>
+<div class="figure">
+<img src="java通过直接指针访问对象.jpg">
+
+</div>
 <p>通过直接指针的方式访问对象，reference里存储的直接就是对象地址。</p>
-<p><img src="java通过句柄访问对象.jpg" alt=""></p>
+<div class="figure">
+<img src="java通过句柄访问对象.jpg">
+
+</div>
 <p>通过句柄的方式访问对象，Java堆中划分出一块内存作为句柄池，reference中保存的就是句柄地址，句柄中保存了具体的对象实例和对象类型数据各自地址。</p>
 <p>这两种访问方式各有利弊：使用句柄方式的好处在于reference中保存的是稳定的句柄地址，在对象被移动时（垃圾回收时经常移动对象），只会改变句柄中对象实例的地址，reference本身不需要修改；使用直接指针访问的好处就是速度更快，节省了一次指针定位的时间。就Sun HotSpot而言，它使用的直接指针访问。</p>
 <p>虚拟机栈区域和程序计数器一样，也是线程私有的，它的生命周期和对应线程的周期一致。</p>
-<p>在Java虚拟机规范中，对虚拟机栈这个区域规定了两种异常情况：</p>
-<ol>
-<li>如果线程请求的栈深度大于虚拟机所允许的的深度，将抛出StackOverflowError</li>
-<li>如果虚拟机要拓展申请新的栈空间，无法申请到足够内存时，会抛出OutOfMemoryError</li>
-</ol>
+<p>在Java虚拟机规范中，对虚拟机栈这个区域规定了两种异常情况： 1. 如果线程请求的栈深度大于虚拟机所允许的的深度，将抛出StackOverflowError 2. 如果虚拟机要拓展申请新的栈空间，无法申请到足够内存时，会抛出OutOfMemoryError</p>
 <p>这两种场景可以理解为Java线程的纵向拓展时可能抛出StackOverflowError和横向拓展时可能抛出OutOfMemoryError。</p>
-<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈和虚拟机栈的作用很类似，只是虚拟机栈是为虚拟机执行Java方法服务的，而本地方法栈是为虚拟机使用到的本地方法服务的。虚拟机规范中并没有明确规定它要怎么实现，有的虚拟机，包括Sun HotSpot就将本地方法栈和虚拟机栈合二为一了。</p>
+<h2 id="本地方法栈">本地方法栈</h2>
+<p>本地方法栈和虚拟机栈的作用很类似，只是虚拟机栈是为虚拟机执行Java方法服务的，而本地方法栈是为虚拟机使用到的本地方法服务的。虚拟机规范中并没有明确规定它要怎么实现，有的虚拟机，包括Sun HotSpot就将本地方法栈和虚拟机栈合二为一了。</p>
 <p>与虚拟机栈一样，本地方法栈也可能抛出两种异常情况，StackOverflowError和OutOfMemoryError。</p>
-<h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><p>几乎可以说，Java堆（Java Heap）是Java虚拟机所管理内存最大的一块，也是所有线程共享的一块区域，在虚拟机启动的时候创建。几乎所有的对象实例都在这里分配内存。</p>
+<h2 id="java堆">Java堆</h2>
+<p>几乎可以说，Java堆（Java Heap）是Java虚拟机所管理内存最大的一块，也是所有线程共享的一块区域，在虚拟机启动的时候创建。几乎所有的对象实例都在这里分配内存。</p>
 <p>Java堆是垃圾收集器管理的主要区域，由于现代垃圾收集器基本都采用分代回收的策略，所以Java堆还会细分为很多区域：新生代和老年代。其中新生带还可以细分为：Eden空间、From Survivor空间、To Survivor空间等。这样的划分是为了更好的回收内存，或者更快的分配内存。</p>
 <p>Java虚拟机规范只规定Java堆区域是逻辑上连续的，在物理空间上可以不连续，就像磁盘空间一样。在具体实现中，Java堆既可以实现为固定大小的，也可以实现为可拓展的，但目前大部分主流虚拟机都实现为可拓展的。通过-Xmx和-Xms参数控制，-Xms配置的是Java堆的初始化大小，在分配实例内存不够用时，会拓展堆的大小，当堆的大小达到-Xmx无法再拓展时，会抛出OutOfMemoryError。</p>
-<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>方法区和Java堆一样，都是各个线程共享的区域。它用于存储被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它缺有一个别名：Non-Heap，目的应该是与Java堆区分开。</p>
+<h2 id="方法区">方法区</h2>
+<p>方法区和Java堆一样，都是各个线程共享的区域。它用于存储被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它缺有一个别名：Non-Heap，目的应该是与Java堆区分开。</p>
 <p>Java虚拟机对这部分的限制非常宽松，除了和Java堆一样可以使用不连续的物理空间和可以选择固定大小还是可拓展以外，还可以选择不进行垃圾收集。这个区域的内存回收目标主要是对运行时常量池回收和类型的卸载。根据Java虚拟机规范，方法区无法满足内存分配需求时，将抛出OutOfMemoryError。</p>
-<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>运行时常量池是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，用于存放编译时生成的各种字面量和符号引用。这部分内容在类被虚拟机加载后，会放到方法区的运行时常量池中。</p>
+<h3 id="运行时常量池">运行时常量池</h3>
+<p>运行时常量池是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，用于存放编译时生成的各种字面量和符号引用。这部分内容在类被虚拟机加载后，会放到方法区的运行时常量池中。</p>
 <p>Java虚拟机对于Class文件中的每一部分，包括常量池都有着严格的规定。Class文件中每一个字节存储的信息都必须符合Java虚拟机规范的规定，这样Class文件才能正常被虚拟机认可、装载和执行。但对于运行时常量池，Java虚拟机规范没有做详细的规定，不同的虚拟机可以有不同的实现方式。</p>
 <p>运行时常量池相对于Class文件的常量池的另外一个重要特性是具备动态性。Java不要求常量一定要在编译期生成，也就是说并非只有预置在Class文件中的常量才能进入到运行时常量池中，运行时也可能有新的常量进入到常量池中，例如String的intern() 方法。</p>
 <p>运行时常量池属于方法区的一部分，内存大小自然受到方法区内存大小的限制。当常量池无法再申请到内存时，会抛出OutOfMemoryError。</p>
-<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p>直接内存并不是虚拟机运行时数据区的一部分，也不是Java虚拟机规范中定义的内存区域。在JDK1.4中引入了NIO类，它可以使用本地函数直接分配堆外内存。</p>
+<h2 id="直接内存">直接内存</h2>
+<p>直接内存并不是虚拟机运行时数据区的一部分，也不是Java虚拟机规范中定义的内存区域。在JDK1.4中引入了NIO类，它可以使用本地函数直接分配堆外内存。</p>
 <p>显然直接内存不会受到Java堆大小的限制，但是还是会受到本机总内存的大小及处理器寻址空间的限制。当虚拟机内的内存和直接内存综合大于物理限制（包括物理上和操作系统级别限制），会抛出OutOfMemoryError。</p>
 
       
@@ -364,6 +412,35 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixin_pay.jpg" alt="潘飞 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/ali_pay.jpg" alt="潘飞 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -459,18 +536,19 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="潘飞" />
+          <p class="site-author-name" itemprop="name">潘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">不积跬步，无以至千里</p>
           
-            <p class="site-author-name" itemprop="name">潘飞</p>
-            <p class="site-description motion-element" itemprop="description">不积跬步，无以至千里</p>
         </div>
-
         <nav class="site-state motion-element">
 
           
             <div class="site-state-item site-state-posts">
-            
               <a href="/archives/">
-            
                 <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -500,13 +578,23 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/panfei1993" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="https://www.zhihu.com/people/pan-fei-94-61" target="_blank" title="知乎">
+                <a href="http://www.zhihu.com/people/pan-fei-94-61" target="_blank" title="知乎">
                   
-                    <i class="fa fa-fw fa-globe"></i>知乎</a>
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
               </span>
             
           
@@ -533,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地方法栈"><span class="nav-number">3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java堆"><span class="nav-number">4.</span> <span class="nav-text">Java堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法区"><span class="nav-number">5.</span> <span class="nav-text">方法区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">5.1.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接内存"><span class="nav-number">6.</span> <span class="nav-text">直接内存</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java虚拟机栈"><span class="nav-number">2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地方法栈"><span class="nav-number">3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java堆"><span class="nav-number">4.</span> <span class="nav-text">Java堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法区"><span class="nav-number">5.</span> <span class="nav-text">方法区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">5.1.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接内存"><span class="nav-number">6.</span> <span class="nav-text">直接内存</span></a></li></ol></div>
             
 
           </div>
@@ -561,16 +649,19 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">潘飞</span>
-
-  
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
 
-  <span class="post-meta-divider">|</span>
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
 
 
         
@@ -589,16 +680,10 @@
     <span class="site-pv">
       本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      次
+      人
     </span>
   
 </div>
-
-
-
-
-
-
 
 
         
@@ -681,11 +766,11 @@
 
 
 
+  
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
 
-  
 
   
 
@@ -715,8 +800,6 @@
 
 
   
-
-
 
 
 

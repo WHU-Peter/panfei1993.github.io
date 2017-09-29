@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next gemini" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,11 +35,54 @@
 
 
 
-
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
 
@@ -86,12 +127,11 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
-    version: '5.1.2',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    motion: false,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -124,6 +164,12 @@
 
 
 
+
+
+
+
+
+
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -133,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,12 +225,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            关于
+            归档
           </a>
         </li>
       
@@ -195,16 +241,6 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
           </a>
         </li>
       
@@ -333,18 +369,19 @@
 
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="潘飞" />
+          <p class="site-author-name" itemprop="name">潘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">不积跬步，无以至千里</p>
           
-            <p class="site-author-name" itemprop="name">潘飞</p>
-            <p class="site-description motion-element" itemprop="description">不积跬步，无以至千里</p>
         </div>
-
         <nav class="site-state motion-element">
 
           
             <div class="site-state-item site-state-posts">
-            
               <a href="/archives/">
-            
                 <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -374,13 +411,23 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/panfei1993" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="https://www.zhihu.com/people/pan-fei-94-61" target="_blank" title="知乎">
+                <a href="http://www.zhihu.com/people/pan-fei-94-61" target="_blank" title="知乎">
                   
-                    <i class="fa fa-fw fa-globe"></i>知乎</a>
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
               </span>
             
           
@@ -419,16 +466,19 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">潘飞</span>
-
-  
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
 
-  <span class="post-meta-divider">|</span>
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
 
 
         
@@ -447,16 +497,10 @@
     <span class="site-pv">
       本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      次
+      人
     </span>
   
 </div>
-
-
-
-
-
-
 
 
         
@@ -539,9 +583,9 @@
 
 
 
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
-
 
   
 
@@ -573,8 +617,6 @@
 
 
   
-
-
 
 
 
