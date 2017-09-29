@@ -71,13 +71,13 @@
 
 <meta name="description" content="不积跬步，无以至千里">
 <meta property="og:type" content="website">
-<meta property="og:title" content="技术博客">
+<meta property="og:title" content="市井小民whu">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="技术博客">
+<meta property="og:site_name" content="市井小民whu">
 <meta property="og:description" content="不积跬步，无以至千里">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="技术博客">
+<meta name="twitter:title" content="市井小民whu">
 <meta name="twitter:description" content="不积跬步，无以至千里">
 
 
@@ -114,7 +114,7 @@
 
 
 
-  <title>技术博客</title>
+  <title>市井小民whu</title>
   
 
 
@@ -145,7 +145,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">技术博客</span>
+        <span class="site-title">市井小民whu</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/垃圾收集器和内存分配策略/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="潘飞">
@@ -251,7 +251,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="技术博客">
+      <meta itemprop="name" content="市井小民whu">
     </span>
 
     
@@ -261,7 +261,142 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/22/Java内存区域与内存溢出/" itemprop="url">Java运行时内存区域</a></h1>
+                <a class="post-title-link" href="/2017/09/27/垃圾收集器和内存分配策略/" itemprop="url">(深入Java-2)垃圾收集器和内存分配策略</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T15:04:36+08:00">
+                2017-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          这篇我们主要围绕三点来考虑与Java垃圾回收相关的话题：
+
+哪些内存需要回收
+什么时候回收
+如何回收
+
+哪些内存需要回收？上篇文章我们介绍了：Java的运行时内存区域的各个部分。
+其中程序计数器、虚拟机栈、本地方法栈三个区域是线程私有的，随线程而生，随线程而灭。因此这几个区域的内存分配和回收都相对有确定性，随着方法结束活着线程结束，内存自然就回收了。
+但Java堆和方法区不一样，我们只有程序处于运行时，才知道会创建哪些对象，这部分内存的分配和回收都是动态的。垃圾收集器关心的内存就是这一部分，后文中我们讨论的内存分配和回收都是指这部分内存。
+什么时候回收？简单来说，当对象已经“死了”，即不可能再
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/27/垃圾收集器和内存分配策略/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="潘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="市井小民whu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/22/Java内存区域与内存溢出/" itemprop="url">(深入Java-1)Java运行时内存区域</a></h1>
         
 
         <div class="post-meta">
@@ -404,7 +539,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -417,7 +552,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Java,深入Java虚拟机," />
 
 
 
@@ -70,19 +70,19 @@
 
 
 <meta name="description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
-<meta name="keywords" content="Java">
+<meta name="keywords" content="Java,深入Java虚拟机">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java运行时内存区域">
+<meta property="og:title" content="(深入Java-1)Java运行时内存区域">
 <meta property="og:url" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/index.html">
-<meta property="og:site_name" content="技术博客">
+<meta property="og:site_name" content="市井小民whu">
 <meta property="og:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java运行时区域.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java通过直接指针访问对象.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java通过句柄访问对象.jpg">
-<meta property="og:updated_time" content="2017-09-27T03:34:51.000Z">
+<meta property="og:updated_time" content="2017-09-29T08:48:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java运行时内存区域">
+<meta name="twitter:title" content="(深入Java-1)Java运行时内存区域">
 <meta name="twitter:description" content="根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存区域包含下图中所示的几个部分。  可以看出，JVM堆内存区域的管理，和操作系统进程对内存的管理很类似。 程序计数器程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以理解为当前线程执行的虚拟机字节码的行号指示器。值得注意的一点是，如果当前线程执行的是一个Java方法，程序计数器里记录的就是虚拟机">
 <meta name="twitter:image" content="http://yoursite.com/2017/09/22/Java内存区域与内存溢出/java运行时区域.jpg">
 
@@ -120,7 +120,7 @@
 
 
 
-  <title>Java运行时内存区域 | 技术博客</title>
+  <title>(深入Java-1)Java运行时内存区域 | 市井小民whu</title>
   
 
 
@@ -150,7 +150,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">技术博客</span>
+        <span class="site-title">市井小民whu</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -256,7 +256,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="技术博客">
+      <meta itemprop="name" content="市井小民whu">
     </span>
 
     
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java运行时内存区域</h1>
+          <h1 class="post-title" itemprop="name headline">(深入Java-1)Java运行时内存区域</h1>
         
 
         <div class="post-meta">
@@ -374,6 +374,8 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
+            <a href="/tags/深入Java虚拟机/" rel="tag"># 深入Java虚拟机</a>
+          
         </div>
       
 
@@ -381,6 +383,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/27/垃圾收集器和内存分配策略/" rel="prev" title="(深入Java-2)垃圾收集器和内存分配策略">
+                (深入Java-2)垃圾收集器和内存分配策略 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -460,7 +478,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -473,7 +491,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -695,7 +713,7 @@
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2017/09/22/Java内存区域与内存溢出/';
           this.page.identifier = '2017/09/22/Java内存区域与内存溢出/';
-          this.page.title = 'Java运行时内存区域';
+          this.page.title = '(深入Java-1)Java运行时内存区域';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://panfei1993.disqus.com/embed.js';
