@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next gemini" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,深入Java虚拟机," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="平台无关性 实现平台无关性的关键就在于运行在各种不同平台上的虚拟机都可以载入和执行同一套与平台无关的字节码，从而实现程序的“一次书写，到处执行”。 使用Java编译器可以把Java代码编译成存储字节码的Class文件，使用JRuby等其他语言的编译器同样可以把程序代码编译成Class文件，虚拟机不关心Class的来源语言是什么，只要它符合Class文件应有的结构，它就可以在Java虚拟机中运行。">
+<meta name="keywords" content="Java,深入Java虚拟机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(深入Java-3)类文件结构">
+<meta property="og:url" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/index.html">
+<meta property="og:site_name" content="市井小民whu">
+<meta property="og:description" content="平台无关性 实现平台无关性的关键就在于运行在各种不同平台上的虚拟机都可以载入和执行同一套与平台无关的字节码，从而实现程序的“一次书写，到处执行”。 使用Java编译器可以把Java代码编译成存储字节码的Class文件，使用JRuby等其他语言的编译器同样可以把程序代码编译成Class文件，虚拟机不关心Class的来源语言是什么，只要它符合Class文件应有的结构，它就可以在Java虚拟机中运行。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/java平台无关性.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-魔数.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-文件版本.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-常量池大小.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/常量池数据类型.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/常量池类型结构.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-常量池第一项.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-常量池第四项.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-常量池第十八项.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/访问标志示意.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-访问标志.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-类索引.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-字段表数量.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/字段表-访问标志示意.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-字段表.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/方法表-访问标志示意.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/Class文件-方法表.png">
+<meta property="og:updated_time" content="2017-11-07T09:40:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(深入Java-3)类文件结构">
+<meta name="twitter:description" content="平台无关性 实现平台无关性的关键就在于运行在各种不同平台上的虚拟机都可以载入和执行同一套与平台无关的字节码，从而实现程序的“一次书写，到处执行”。 使用Java编译器可以把Java代码编译成存储字节码的Class文件，使用JRuby等其他语言的编译器同样可以把程序代码编译成Class文件，虚拟机不关心Class的来源语言是什么，只要它符合Class文件应有的结构，它就可以在Java虚拟机中运行。">
+<meta name="twitter:image" content="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/java平台无关性.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/"/>
+
+
+
+
+
+  <title>(深入Java-3)类文件结构 | 市井小民whu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">市井小民whu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/29/深入Java-3-类文件结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="潘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="市井小民whu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">(深入Java-3)类文件结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-29T20:41:11+08:00">
+                2017-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="平台无关性">平台无关性</h2>
+<p>实现平台无关性的关键就在于运行在各种不同平台上的虚拟机都可以载入和执行同一套与平台无关的字节码，从而实现程序的“一次书写，到处执行”。</p>
+<p>使用Java编译器可以把Java代码编译成存储字节码的Class文件，使用JRuby等其他语言的编译器同样可以把程序代码编译成Class文件，虚拟机不关心Class的来源语言是什么，只要它符合Class文件应有的结构，它就可以在Java虚拟机中运行。</p>
+<div class="figure">
+<img src="java平台无关性.png">
+
+</div>
+<h2 id="class类文件的结构">Class类文件的结构</h2>
+<p>Class文件是一组以8位字节为基础单位的二进制流，各个数据项目严格按照顺序紧凑的的排列在Class文件中，中间没有任何分隔符。</p>
+<p>根据Java虚拟机规范，Class文件格式采用一种伪结构体来存储，这个伪结构体里只有两种数据类型：无符号数和表。后面的解析都基于这两种数据类型，这里先介绍这两个概念：</p>
+<ol style="list-style-type: decimal">
+<li>无符号数。无符号数是基本数据类型，以u1,u2,u4,u8分别来代表1个字节，2个字节，4个字节，8个字节的无符号数，无符号数可以用来描述数字，索引引用，数量值或是按照UTF-8编码构成的字符串值。</li>
+<li>表。表是由多个无符号数和其他表作为数据项构成的复合数据类型，所有表都习惯以_info结尾。表用于描述有层次关系的复合数据结构的数据。整个Class文件本质就是一张表。</li>
+</ol>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">ClassFile &#123;</div><div class="line">   u4             magic;</div><div class="line">   u2             minor_version;</div><div class="line">   u2             major_version;</div><div class="line">   u2             constant_pool_count;</div><div class="line">   cp_info        constant_pool[constant_pool_count<span class="number">-1</span>];</div><div class="line">   u2             access_flags;</div><div class="line">   u2             this_class;</div><div class="line">   u2             super_class;</div><div class="line">   u2             interfaces_count;</div><div class="line">   u2             interfaces[interfaces_count];</div><div class="line">   u2             fields_count;</div><div class="line">   field_info     fields[fields_count];</div><div class="line">   u2             methods_count;</div><div class="line">   method_info    methods[methods_count];</div><div class="line">   u2             attributes_count;</div><div class="line">   attribute_info attributes[attributes_count];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如上所示，Class文件中所有的数据项，无论是顺序还是数量，都是被严格限定的，哪个字节代表什么意思，长度是多少，先后顺序如何，都是不允许改变的。接下来我们将一起看看各个数据项的具体含义。</p>
+<p>为了方便接下来的介绍，我们先写一小段极简单的Java代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.panfei.demo.study;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> m;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">inc</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> m + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是对这段代码使用jdk1.7编译器编译得到的Class文件：</p>
+<p><img src="Class文件.png" width="70%" height="70%"></p>
+<p>后面对Class文件中各个数据项的介绍都以这段代码生成的Class文件为例来进行说明。</p>
+<h3 id="魔数与class文件版本">魔数与Class文件版本</h3>
+<p><img src="Class文件-魔数.png" width="70%" height="70%"></p>
+<p>每个Class文件的头4个字节称为魔数(magic)，它的唯一作用是用于确定这个文件是否为一个Java虚拟机能接受的Class文件。很多文件存储标准里都用魔数来来进行身份识别，譬如图片文件，gif和jpeg等在文件头中都有魔数。Class文件的魔数值为:0xCAFEBABE，占用四个字节。如上图所示。</p>
+<p><img src="Class文件-文件版本.png" width="70%" height="70%"></p>
+<p>紧跟着魔数后的4个字节表示Class文件的版本号，全文件第五、第六个字节是次版本号(Minor Version)，第七、第八个字节是主版本号(Major Version)。主次版本号是为了让虚拟机来确定当前版本的虚拟机是否能够接受并运行这个Class文件。图中，我们这四个字节为0x00000033。次版本号为0x0000，主版本号为0x0033，十进制为51，这个版本号说明这个Class文件可以被JDK 1.7或更高版本的虚拟机所接受执行。</p>
+<h3 id="常量池">常量池</h3>
+<p>紧接着主次版本号后的就是常量池部分，常量池是整个Class文件结构中与其他项目关联最多的数据类型，也是占用Class文件空间最大的的数据项之一。同时它也是Class文件中出现的第一个表类型的数据项。</p>
+<p>由于常量池中常量的数量是不确定的，所以常量池的入口放置了一项u2类型的数据，代表常量池容量计数值。与Java语言习惯不同的是，常量池的容量计数是从1而不是从0开始的，在下图中，常量池的长度为0x0016，即十进制的22，这就代表常量池有21项常量，索引值从1-21。Class文件中只有常量池的容量计数是从1开始的，其他的集合类型，包括接口索引集合，字段表集合，方法表集合等容量计数都是从0开始的。</p>
+<p><img src="Class文件-常量池大小.png" width="70%" height="70%"></p>
+<p>常量池中主要存放两大类常量：字面量和符号引用。无论是字面量还是符号引用，其本质都是一个表结构，常量池包含的主要的表结构数据如下：</p>
+<div class="figure">
+<img src="常量池数据类型.png">
+
+</div>
+<p>这些表类型都有一个共同的特点：就是表开始的第一个是一个u1类型的标志位（tag），代表当前这个常量属于哪种类型的常量。</p>
+<div class="figure">
+<img src="常量池类型结构.png">
+
+</div>
+<p>据此，我们由下面的例图来具体分析一下常量池中的各项。</p>
+<p><img src="Class文件-常量池第一项.png" width="70%" height="70%"></p>
+<p>首先来看一下第一项，它的标志位是0x0A，十进制表示10，根据上表可以看到这个常量属于CONSTANT_Methodref_info类型，此类型表示类中方法的符号引用。CONSTANT_Methodref_info类型包含三个部分，第1个字节表示标志位，中间2个字节表示指向声明方法的类描述符CONSTANT_Class_info的索引项，最后两个字节表示指向名称及类型的描述符CONSTANT_NameAndType的索引项。除了刚刚介绍的第一项的标志位是0x0A，还有第二项是0x0004,表示它指向常量池中的第4个常量，第三项是0x000F,表示它指向常量池中的第15项。</p>
+<p>那我们具体看看第4项是什么。</p>
+<p><img src="Class文件-常量池第四项.png" width="70%" height="70%"></p>
+<p>可以看到第4项的标记位是0x07,根据查表可以知道这个常量属于CONSTANT_Class_info类型，再根据常量池各个类型结构的表可以得知，CONSTANT_Class_info类型常量仅包含两部分，第1个字节表示标记位，后两个字节表示指向全限定名常量项的索引。这里后两项是0x0012,十进制18，所以它表示指向第18项常量。这里我们看下第18项常量：</p>
+<p><img src="Class文件-常量池第十八项.png" width="70%" height="70%"></p>
+<p>可以看到第18项的标记位是0x01,查表可知这个常量属于CONSTANT_Utf8_info类型，它包括三部分，第1个字节表示标志位，接着2个字节表示UTF-8编码的字符串占用的字节数，后面有前两个字节表示的长度个字符。对于上图中，标志位后面接着的两位是0x10，十进制16，说明后面接着是16个字节的UTF-8编码的字符串。例如后面跟的第一个字节是0x6A,十进制106，UTF-8编码代表“j”,以此类推，这16个字节代表着：“java/lang/Object”。</p>
+<p>至此第4项常量我们就分析完了，同样的方法可以分析出第15项常量表示什么。像这样分析Class文件太慢了，我们可以利用 javap -verbose class文件名 来帮助我们分析Class文件。像这份Class文件，我们可以得到常量池的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"> #1 = Methodref          #4.#15         //  java/lang/Object.&quot;&lt;init&gt;&quot;:()V</div><div class="line"> #2 = Fieldref           #3.#16         //  com/panfei/demo/study/TestClass.m:I</div><div class="line"> #3 = Class              #17            //  com/panfei/demo/study/TestClass</div><div class="line"> #4 = Class              #18            //  java/lang/Object</div><div class="line"> #5 = Utf8               m</div><div class="line"> #6 = Utf8               I</div><div class="line"> #7 = Utf8               &lt;init&gt;</div><div class="line"> #8 = Utf8               ()V</div><div class="line"> #9 = Utf8               Code</div><div class="line">#10 = Utf8               LineNumberTable</div><div class="line">#11 = Utf8               inc</div><div class="line">#12 = Utf8               ()I</div><div class="line">#13 = Utf8               SourceFile</div><div class="line">#14 = Utf8               TestClass.java</div><div class="line">#15 = NameAndType        #7:#8          //  &quot;&lt;init&gt;&quot;:()V</div><div class="line">#16 = NameAndType        #5:#6          //  m:I</div><div class="line">#17 = Utf8               com/panfei/demo/study/TestClass</div><div class="line">#18 = Utf8               java/lang/Object</div></pre></td></tr></table></figure>
+<p>这样看起来就很直观了，也大大的提高了我们分析的效率。我们可以用这个来分析一下第15项常量，它是一个NameAndType的类型的常量。它又指向第7和第8项常量，第7项常量是一个UTF-8的字符串“<init>”，第8项也是一个UTF-8的字符串“()V”。这里我们大概明白了：这第一项常量是一个方法的符号引用，这个方法其实就是这个类的构造器。对于这里对方法的符号引用的表达习惯，我们后面还会再具体介绍。</init></p>
+<h3 id="访问标志">访问标志</h3>
+<p>在常量池之后紧接着两个字节表示访问标志(access_flags)，这个标志用于识别一些类或接口层面的访问信息。这里在网上找到一张画的非常好的图片（来源：http://blog.csdn.net/luanlouis/article/details/41039269），来表达这个意思：</p>
+<div class="figure">
+<img src="访问标志示意.png">
+
+</div>
+<p>以咱们的这个Class文件为例：</p>
+<p><img src="Class文件-访问标志.png" width="70%" height="70%"></p>
+<p>访问标志为0x0021，二进制为0000 0000 0010 0001，对比上图，ACC_PUBLIC和ACC_SUPER标记位为真。</p>
+<h3 id="类索引父类索引与接口索引列表">类索引、父类索引与接口索引列表</h3>
+<p>访问标志后面紧跟着的就是2个字节的类索引，2个字节的父类索引，以及若干个2字节的接口索引集合。Class文件中由这三项数据来确定这个类的继承关系。类索引用于确定这个类的全限定名，父类索引用于确定父类的全限定名，Java不允许多继承，所以只会有一个父类索引。除了java.lang.Object以外，所有的Java类都有父类，因此除了java.lang.Object，父类索引都不为0。接口索引列表就是确定这个类实现的所有接口，按照implments后面排列的顺序，从左到右排列在接口的索引集合中。</p>
+<p><img src="Class文件-类索引.png" width="70%" height="70%"></p>
+<p>这个Class文件中，类索引是0x0003，指向常量池中第3项常量。父类索引是0x0004，指向常量池中第4项常量。后面两位表示接下来接口列表的数量，0x0000，这个类没有实现任何接口，接口数量为0，所以这部分也就到此为止。</p>
+<h3 id="字段表集合">字段表集合</h3>
+<p>字段表用于描述接口或类中声明的变量，字段包括了类级变量和实例级变量，但不包含在方法内部声明的变量。紧跟在类索引、父类索引、接口索引列表后面的就是字段表集合。首先有两个字节表示字段表中字段的数量(fileds_count)，后面紧接着是长度为这个数值的字段表列表：</p>
+<p><img src="Class文件-字段表数量.png" width="70%" height="70%"></p>
+<p>例图中表示字段表中只有一项，所以接下来只有一个字段。字段表中表示一个字段的结构如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u2</td>
+<td>access_flags</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>u2</td>
+<td>name_index</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>u2</td>
+<td>descriptor_index</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>u2</td>
+<td>attributes_count</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>attribute_info</td>
+<td>attributes</td>
+<td>attributes_count</td>
+</tr>
+</tbody>
+</table>
+<p>前两个字节表示access_flags，它与类中的访问标志是非常类似的，这里我们还用这位大神画的这张图来做说明：</p>
+<div class="figure">
+<img src="字段表-访问标志示意.png">
+
+</div>
+<p>紧跟在access_flags后面的是两项索引：name_index和descriptor_index。它们都是对常量池中某项常量的引用，分别代表着字段的简单名称及字段的描述符。所谓字段的简单名称就是值不加类型修饰的变量名，字段的描述符就是用来描述字段的数据类型，根据规则约定，基本数据类型都用一个大写字母来代替，而对象类型则用一个L加对象的全限定名垃圾表示。</p>
+<table>
+<thead>
+<tr class="header">
+<th>标识字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>B</td>
+<td>基本类型byte</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>基本类型char</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>基本类型double</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>基本类型float</td>
+</tr>
+<tr class="odd">
+<td>I</td>
+<td>基本类型int</td>
+</tr>
+<tr class="even">
+<td>J</td>
+<td>基本类型long</td>
+</tr>
+<tr class="odd">
+<td>S</td>
+<td>基本类型short</td>
+</tr>
+<tr class="even">
+<td>Z</td>
+<td>基本类型boolean</td>
+</tr>
+<tr class="odd">
+<td>V</td>
+<td>特殊类型void</td>
+</tr>
+<tr class="even">
+<td>L</td>
+<td>对象类型Ljava/lang/Object;</td>
+</tr>
+</tbody>
+</table>
+<p>对于数组类型，每一维度将使用一个前缀的的“[”字符来描述，如定义一个“java.lang.String[][]”类型的二维数组，应当表示为“[[Ljava/lang/String;”,如定义一个“int[]”,可以表示为“[I”。</p>
+<p>我们结合这个Class文件进一步说明：</p>
+<p><img src="Class文件-字段表.png" width="70%" height="70%"></p>
+<p>access_falgs是0x0002，二进制为：0000 0000 0000 0010，表明ACCESS_PRIVATE被标记，这个字段在Java文件中被private修饰。接下来代表字段简单名称的常量池索引是0x0005，根据前面介绍的常量池部分，可以看到这个常量代表“m”。再接下来代表字段类型的常量池索引是0x0006，可以判断这个常量是“I”，就此我们可以推断出Java文件中声明这个字段应该是“private int m”。</p>
+<p>字段表的固定内容在到descriptor_index时就已经全部结束了，接下来应该是表示后面属性表大小的数值，这里是0x0000，所以后面不再有属性表。但是如果Java文件中声明“final static int m = 123”的话，那这里属性表里就会有内容了。关于属性表的结构，后面我们再单独介绍。</p>
+<h3 id="方法表集合">方法表集合</h3>
+<p>在理解了字段表之后，方法表的介绍将变得非常简单。先是两个字节表示接下来方法表集合中方法的数量，加下来是相应数量的项来表示方法。方法表的结构跟字段表结构非常类似：</p>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u2</td>
+<td>access_flags</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>u2</td>
+<td>name_index</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>u2</td>
+<td>descriptor_index</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>u2</td>
+<td>attributes_count</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>attribute_info</td>
+<td>attributes</td>
+<td>attributes_count</td>
+</tr>
+</tbody>
+</table>
+<p>在方法表中一项中，前两个字节表示ACCESS_FLAGS，与字段表的ACCESS_FALGS相比，这里一些只能修饰字段而不能修饰方法的标记比如volatile被取消，引入另外一些专门修饰方法的标记。详细可参加下图：</p>
+<div class="figure">
+<img src="方法表-访问标志示意.png">
+
+</div>
+<p>紧跟着是方法的name_index和descriptor_index，对于方法的简单名称就是不带任何参数和类型修饰的方法名，对于方法的描述符，按照先参数列表，后返回值的顺序描述，参数列表严格按照参数顺序放在一组小括号“()”内，如方法“void inc()”的描述符为“()V”，方法“java.lang.String toString()”描述符为“()Ljava/lang/String;”。</p>
+<p>方法里的Java代码，经过编译器编译成字节码指令之后，存放在方法属性表集合中一个名为“Code”的属性里，对于属性表的详细信息，后面我们再具体介绍。</p>
+<p>我们还是用这个Class文件来进行说明：</p>
+<p><img src="Class文件-方法表.png" width="70%" height="70%"></p>
+<h3 id="属性表集合">属性表集合</h3>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixin_pay.jpg" alt="潘飞 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/ali_pay.jpg" alt="潘飞 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/深入Java虚拟机/" rel="tag"># 深入Java虚拟机</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/27/垃圾收集器和内存分配策略/" rel="next" title="(深入Java-2)垃圾收集器和内存分配策略">
+                <i class="fa fa-chevron-left"></i> (深入Java-2)垃圾收集器和内存分配策略
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  <div onclick="showGitment()" id="gitment_title" class="gitment_title">显示 Gitment 评论</div>
+  <div id="container" style="display:none"></div>
+  <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+  <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+  <script>
+  const myTheme = {
+    render(state, instance) {
+      const container = document.createElement('div');
+      container.lang = "en-US";
+      container.className = 'gitment-container gitment-root-container';
+      container.appendChild(instance.renderHeader(state, instance));
+      container.appendChild(instance.renderEditor(state, instance));
+      container.appendChild(instance.renderComments(state, instance));
+      container.appendChild(instance.renderFooter(state, instance));
+      return container;
+    }
+  }
+  function showGitment() {
+    $("#gitment_title").attr("style", "display:none");
+    $("#container").attr("style", "").addClass("gitment_container");
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      theme: myTheme,
+      owner: '13589586',
+      repo: 'panfei1993.github.io',
+      oauth: {
+        client_id: 'bdb27643884a732a3984',
+        client_secret: 'a3828cc209d997aa5c8c4596d71aac03fc19c900'
+      }
+    });
+    gitment.render('container');
+  }
+  </script>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="潘飞" />
+          <p class="site-author-name" itemprop="name">潘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">不积跬步，无以至千里</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/panfei1993" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/pan-fei-94-61" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#平台无关性"><span class="nav-number">1.</span> <span class="nav-text">平台无关性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class类文件的结构"><span class="nav-number">2.</span> <span class="nav-text">Class类文件的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#魔数与class文件版本"><span class="nav-number">2.1.</span> <span class="nav-text">魔数与Class文件版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量池"><span class="nav-number">2.2.</span> <span class="nav-text">常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问标志"><span class="nav-number">2.3.</span> <span class="nav-text">访问标志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类索引父类索引与接口索引列表"><span class="nav-number">2.4.</span> <span class="nav-text">类索引、父类索引与接口索引列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字段表集合"><span class="nav-number">2.5.</span> <span class="nav-text">字段表集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法表集合"><span class="nav-number">2.6.</span> <span class="nav-text">方法表集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性表集合"><span class="nav-number">2.7.</span> <span class="nav-text">属性表集合</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">潘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
